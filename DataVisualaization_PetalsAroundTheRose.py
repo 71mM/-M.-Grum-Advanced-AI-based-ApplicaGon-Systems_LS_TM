@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.model_selection import train_test_split
 
 # URL of the GitHub page
 GITHUB_URL = "https://github.com/alecGraves/tensorflow-petals-around-the-rose/blob/master/rosepetals.dat"  # Replace with the actual URL
