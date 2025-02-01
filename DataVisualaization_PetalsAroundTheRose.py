@@ -40,7 +40,7 @@ else:
 df = pd.DataFrame(dataset, columns=['Inputs', 'Label'])
 
 # Expand input lists into separate columns
-input_columns = ['Input1', 'Input2', 'Input3', 'Input4', 'Input5']
+input_columns = ['Würfel1', 'Würfel2', 'Würfel3', 'Würfel4', 'Würfel5']
 df[input_columns] = pd.DataFrame(df['Inputs'].tolist(), index=df.index)
 df.drop(columns=['Inputs'], inplace=True)
 
