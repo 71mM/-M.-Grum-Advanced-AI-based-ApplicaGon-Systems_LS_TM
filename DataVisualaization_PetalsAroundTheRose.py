@@ -51,18 +51,21 @@ print(df.describe())
 plt.figure(figsize=(12, 6))
 df[input_columns].hist(figsize=(12, 6), bins=10, layout=(2, 3), edgecolor='black')
 plt.suptitle('Histograms of Input Features', fontsize=14)
+plt.savefig('histograms_input_features.pdf')
 plt.show()
 
 # --- Boxplot of input features ---
 plt.figure(figsize=(10, 6))
 sns.boxplot(data=df[input_columns])
 plt.title('Boxplot of Input Features')
+plt.savefig('boxplot_input_features.pdf')
 plt.show()
 
 # --- Histogram of labels ---
 plt.figure(figsize=(8, 5))
 sns.histplot(df['Label'], bins=10, kde=True, edgecolor='black')
 plt.title('Distribution of Labels')
+plt.savefig('histogram_labels.pdf') 
 plt.show()
 
 # --- Correlation matrix ---
@@ -72,4 +75,23 @@ correlation_matrix = df.corr()
 plt.figure(figsize=(10, 6))
 sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', linewidths=0.5)
 plt.title('Correlation Matrix of Features and Label')
+plt.savefig('correlation_matrix.pdf')
 plt.show()
+
+# --- Train-Test Split ---
+X = df[input_columns]
+y = df['Label']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Save the split data to CSV files
+train_data = pd.concat([X_train, y_train], axis=1)
+test_data = pd.concat([X_test, y_test], axis=1)
+
+train_data.to_csv('train_data.csv', index=False)
+test_data.to_csv('test_data.csv', index=False)
+
+# Save the entire dataset to a CSV file
+df.to_csv('full_dataset.csv', index=False)
+
+print("Train and test data saved as CSV.")
