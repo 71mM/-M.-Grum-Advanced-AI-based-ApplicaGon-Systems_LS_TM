@@ -2,6 +2,9 @@ import tensorflow as tf
 from tensorflow.keras.models import load_model
 from tensorflow.keras import layers, Model
 import pandas as pd
+import pickle
+import statsmodels.api as sm
+
 
 class PetalsLSTM(Model):
     def __init__(self, input_size=1, hidden_size=32, num_layers=1, **kwargs):
@@ -35,20 +38,34 @@ class PetalsLSTM(Model):
         return cls(**config)
 
 
+with open("currentOlsSolution.pkl", "rb") as file:
+    model_OLS = pickle.load(file)
 
-model = load_model('currentSolution.keras', custom_objects={'PetalsLSTM': PetalsLSTM})
+model_AI = load_model('currentSolution.keras', custom_objects={'PetalsLSTM': PetalsLSTM})
 
 activation_data = pd.read_csv(f'../images/activationBase/activation_data.csv')
 label = activation_data['Label']
-activation_data_input = activation_data.drop(columns=['Label'])
 
-prediction = model.predict(activation_data_input)
+activation_data_input_ai = activation_data[['Input1', 'Input2', 'Input3', 'Input4', 'Input5']]
+activation_data_input_ols = activation_data[['Input1', 'Input2', 'Input3', 'Input4', 'Input5']]
+
+
+prediction_OLS = model_OLS.predict(activation_data_input_ols)
+prediction_AI = model_AI.predict(activation_data_input_ai)
+
+
+print("AI model prediction:")
 print("Input:")
-print(activation_data_input)
+print(activation_data_input_ai)
 print("------------------------------------------")
-print("Prediction: ", prediction[0])
+print("Prediction: ", prediction_AI[0])
 print("actual label: ", label[0])
 
-
+print("OLS model prediction:")
+print("Input:")
+print(activation_data_input_ols)
+print("------------------------------------------")
+print("Prediction: ", prediction_OLS[0])
+print("actual label: ", label[0])
 
 
