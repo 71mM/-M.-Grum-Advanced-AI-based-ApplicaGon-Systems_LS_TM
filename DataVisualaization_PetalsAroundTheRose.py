@@ -75,6 +75,26 @@ sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', linewidths=0.5)
 plt.title('Correlation Matrix of Features and Label')
 plt.show()
 
+#-----------------------------------------------------------------------------------------
+#   Additional outlier detection
+#-----------------------------------------------------------------------------------------
+
+# --- IQR Method ---
+Q1 = df[input_columns].quantile(0.25)
+Q3 = df[input_columns].quantile(0.75)
+IQR = Q3 - Q1
+
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+
+outliers_iqr = ((df[input_columns] < lower_bound) | (df[input_columns] > upper_bound)).sum()
+print("Outliers detected using IQR method:")
+print(outliers_iqr)
+
+#-----------------------------------------------------------------------------------------
+#   Save th data
+#-----------------------------------------------------------------------------------------
+
 # Save the full dataset
 df.to_csv("joint_data_collection.csv", index=False)
 print("Full dataset saved as 'joint_data_collection.csv'")
