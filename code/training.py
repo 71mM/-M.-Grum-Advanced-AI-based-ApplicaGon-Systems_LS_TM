@@ -3,22 +3,28 @@ import tensorflow as tf
 import tensorflow.keras as keras
 from datetime import datetime
 import matplotlib.pyplot as plt
+import pandas as pd
 
-""" Hier muss das dataset eingebundenwerden
-max_sequence_length = 50
-input_sequences, target_sequences = generate_training_data()
-inputs, targets = preprocess_data(input_sequences, target_sequences, max_sequence_length)
-"""
-epochs = 1000
+df_test = pd.read_csv(f'../images/learningBase/validation/test_data.csv')
+df_train = pd.read_csv(f'../images/learningBase/train/training_data.csv')
+
+epochs = 1
 patience = 25
 best_loss = float('inf')
-best_model_path = f"best_model_{datetime.now().strftime('%Y%m%d_%H%M%S')}.keras"
+best_model_path = f"currentAiSolution.keras"
 
-# Annahme: PetalsLSTM ist ein benutzerdefiniertes Modell, das bereits erstellt wurde
 model = PetalsLSTM(input_size=1, hidden_size=32, num_layers=1)
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.01), loss='mse')
 
-# Callback zur Berechnung des Testverlusts nach jeder Epoche
+X_train = df_train.drop(columns=['Label'])
+y_train = df_train['Label']
+X_test = df_test.drop(columns=['Label'])
+y_test = df_test['Label']
+
+
+test_data = (X_test, y_test)
+
+
 class TestLossCallback(tf.keras.callbacks.Callback):
     def __init__(self, test_data):
         self.test_data = test_data
@@ -30,10 +36,7 @@ class TestLossCallback(tf.keras.callbacks.Callback):
         self.test_losses.append(test_loss)
         print(f"Epoch {epoch+1}: Test Loss = {test_loss}")
 
-# Testdaten (für die Berechnung des Testverlusts)
-test_data = (X_test, y_test)
 
-# Callbacks für Early Stopping, Modell-Speicherung und Testverlust-Überwachung
 early_stopping = tf.keras.callbacks.EarlyStopping(monitor='loss', patience=patience, restore_best_weights=True)
 model_checkpoint = tf.keras.callbacks.ModelCheckpoint(best_model_path, save_best_only=True, monitor='loss')
 test_loss_callback = TestLossCallback(test_data)
