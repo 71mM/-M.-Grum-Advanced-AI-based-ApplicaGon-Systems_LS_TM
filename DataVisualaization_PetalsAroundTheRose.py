@@ -76,6 +76,50 @@ correlation_matrix = df.corr()
 plt.figure(figsize=(10, 6))
 sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', linewidths=0.5)
 plt.title('Correlation Matrix of Features and Label')
+plt.show()
+
+#-----------------------------------------------------------------------------------------
+#   Additional outlier detection
+#-----------------------------------------------------------------------------------------
+
+# --- IQR Method ---
+Q1 = df[input_columns].quantile(0.25)
+Q3 = df[input_columns].quantile(0.75)
+IQR = Q3 - Q1
+
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+
+outliers_iqr = ((df[input_columns] < lower_bound) | (df[input_columns] > upper_bound)).sum()
+print("Outliers detected using IQR method:")
+print(outliers_iqr)
+
+#-----------------------------------------------------------------------------------------
+#   Save th data
+#-----------------------------------------------------------------------------------------
+
+# Save the full dataset
+df.to_csv("joint_data_collection.csv", index=False)
+print("Full dataset saved as 'joint_data_collection.csv'")
+
+# Split the data into training (80%) and testing (20%)
+train_df, test_df = train_test_split(df, test_size=0.2, random_state=42)
+
+# Save training data
+train_df.to_csv("training_data.csv", index=False)
+print("Training dataset saved as 'training_data.csv'")
+
+# Save test data
+test_df.to_csv("test_data.csv", index=False)
+print("Test dataset saved as 'test_data.csv'")
+
+# Select one random entry from the test set
+activation_data = test_df.sample(n=1, random_state=42)
+
+# Save activation data
+activation_data.to_csv("activation_data.csv", index=False)
+print("One test data entry saved as 'activation_data.csv'")
+
 plt.savefig('correlation_matrix.pdf')
 plt.show()
 
@@ -96,3 +140,4 @@ test_data.to_csv('test_data.csv', index=False)
 df.to_csv('full_dataset.csv', index=False)
 
 print("Train and test data saved as CSV.")
+
