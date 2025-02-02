@@ -39,7 +39,7 @@ print(f"Root Mean Squared Error (RMSE): {rmse}")
 # --- Saving the model ---
  
 # Save the model
-with open("currentOlsSolution.pkl", "wb") as file:
+with open("../images/knowledgeBase/currentOlsSolution.pkl", "wb") as file:
     pickle.dump(ols_model, file)
 
 print("OLS model saved as 'ols_model.pkl'.")

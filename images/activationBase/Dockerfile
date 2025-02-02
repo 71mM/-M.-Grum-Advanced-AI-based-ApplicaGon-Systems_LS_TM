@@ -1,10 +1,10 @@
 FROM busybox
 
-WORKDIR /tmp/activation
+WORKDIR /tmp/activationBase
 
 
-COPY activation_data.csv /tmp/activation/
-COPY Readme.md /tmp/activation/
+COPY activation_data.csv /tmp/activationBase/
+COPY Readme.md /tmp/activationBase/
 
 # Set default command
 CMD ["sh"]
