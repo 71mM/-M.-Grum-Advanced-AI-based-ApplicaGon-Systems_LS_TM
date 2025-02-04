@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  learning_base:
+    image: learningbase_aibas_tm_ls
+    build:
+      context: .
+      dockerfile: images/learningBase/Dockerfile
+    volumes:
+      - ai_system:/tmp
+
+  activation_base:
+    image: activationbase_aibas_tm_ls
+    build:
+      context: .
+      dockerfile: images/activationBase/Dockerfile
+    volumes:
+      - ai_system:/tmp
+
+volumes:
+  ai_system:

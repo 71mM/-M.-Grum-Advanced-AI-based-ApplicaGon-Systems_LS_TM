@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  knowledgebase:
+    image: knowledgebase_aibas_tm_ls  # Hier das bestehende Image einfügen
+    volumes:
+      - ./knowledgeBase:/tmp/knowledgeBase
+
+  activationbase:
+    image: activationbase_aibas_tm_ls  # Hier das bestehende Image einfügen
+    volumes:
+      - ./activationBase:/tmp/activationBase
+
+  codebase:
+    image: codebase_aibas_tm_ls  # Hier das bestehende Image einfügen
+    depends_on:
+      - knowledgebase
+      - activationbase
+    volumes:
+      - ./knowledgeBase:/tmp/knowledgeBase
+      - ./activationBase:/tmp/activationBase
+    command: ["python", "activation_script_ai.py"]
+
+volumes:
+  knowledgebase:
+  activationbase:
