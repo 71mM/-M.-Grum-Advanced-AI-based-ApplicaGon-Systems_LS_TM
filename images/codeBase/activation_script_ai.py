@@ -49,7 +49,7 @@ print("AI model prediction:")
 print("Input:")
 print(activation_data_input_ai)
 print("------------------------------------------")
-print("Prediction: ", prediction_AI[0])
+print("Prediction: ", prediction_AI)
 print("actual label: ", label[0])
 
 
