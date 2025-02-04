@@ -7,6 +7,8 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras import layers, Model
 
 class PetalsLSTM(Model):
+
+
     def __init__(self, input_size=1, hidden_size=32, num_layers=1, **kwargs):
         super(PetalsLSTM, self).__init__(**kwargs)
         self.input_size = input_size
@@ -36,6 +38,10 @@ class PetalsLSTM(Model):
     def from_config(cls, config):
 
         return cls(**config)
+
+
+
+
 model_AI = load_model(f"../images/knowledgeBase/currentAISolution.keras", custom_objects={'PetalsLSTM': PetalsLSTM})
 
 # Load the model
